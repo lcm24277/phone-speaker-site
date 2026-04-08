@@ -1,0 +1,16 @@
+{
+  "name": "mobile-speaker-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/pc-electron",
+    "packages/shared-protocol",
+    "packages/shared-design-tokens"
+  ],
+  "scripts": {
+    "self-test": "node ./scripts/self-test.mjs",
+    "pc-e2e": "node ./scripts/pc-e2e.mjs",
+    "android-static-check": "node ./scripts/android-static-check.mjs",
+    "verify-e2e-acceptance": "node ./scripts/verify-e2e-acceptance.mjs"
+  }
+}

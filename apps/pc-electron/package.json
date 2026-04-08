@@ -1,0 +1,75 @@
+{
+    "name":  "pc-electron",
+    "version":  "0.1.0",
+    "private":  true,
+    "type":  "module",
+    "main":  "electron/main.cjs",
+    "scripts":  {
+                    "dev":  "vite",
+                    "desktop":  "electron .",
+                    "build":  "vite build",
+                    "pack:win":  "npm run build \u0026\u0026 electron-builder --win nsis",
+                    "pack:portable":  "npm run build \u0026\u0026 electron-builder --win portable",
+                    "lint":  "echo \"lint placeholder\""
+                },
+    "dependencies":  {
+                         "react":  "^18.3.1",
+                         "react-dom":  "^18.3.1"
+                     },
+    "devDependencies":  {
+                            "@types/react":  "^18.3.11",
+                            "@types/react-dom":  "^18.3.1",
+                            "@vitejs/plugin-react":  "^4.4.1",
+                            "electron":  "41.1.1",
+                            "electron-builder":  "^25.1.8",
+                            "typescript":  "^5.7.3",
+                            "vite":  "^5.4.11"
+                        },
+    "build":  {
+                  "appId":  "com.mobilespeaker.pc",
+                  "productName":  "Mobile Speaker PC",
+                  "directories":  {
+                                      "output":  "release"
+                                  },
+                  "files":  [
+                                "dist/**/*",
+                                "electron/**/*",
+                                "service-bin/**/*",
+                                "build/icons/**/*",
+                                "installer/**/*",
+                                "integrations/virtual-audio-driver/**/*",
+                                "package.json"
+                            ],
+                  "asar":  true,
+                  "win":  {
+                              "target":  [
+                                             "nsis"
+                                         ],
+                              "artifactName":  "mobile-speaker-pc-${version}.${ext}",
+                              "icon":  "build/icons/app.ico",
+                              "executableName":  "mobile-speaker-pc"
+                          },
+                  "nsis":  {
+                               "oneClick":  false,
+                               "allowToChangeInstallationDirectory":  true,
+                               "createDesktopShortcut":  true,
+                               "createStartMenuShortcut":  true,
+                               "installerIcon":  "build/icons/app.ico",
+                               "uninstallerIcon":  "build/icons/app.ico",
+                               "installerHeaderIcon":  "build/icons/app.ico",
+                               "artifactName":  "mobile-speaker-pc-setup-${version}.${ext}",
+                               "include":  "build/installer.nsh",
+                               "installerLanguages":  [
+                                                          "en_US",
+                                                          "zh_CN"
+                                                      ],
+                               "multiLanguageInstaller":  true,
+                               "displayLanguageSelector":  false
+                           },
+                  "asarUnpack":  [
+                                     "service-bin/**/*",
+                                     "installer/**/*",
+                                     "integrations/virtual-audio-driver/**/*"
+                                 ]
+              }
+}

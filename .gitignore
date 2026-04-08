@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.gradle/
+build/
+target/
+*.log
+.adb-home/
+.gradle-user/
+key/
+apps/pc-electron/release/
+apps/android-app/.gradle/
+apps/android-app/app/build/
+artifacts/
+services/pc-audio-service-rust/target-build-verify/

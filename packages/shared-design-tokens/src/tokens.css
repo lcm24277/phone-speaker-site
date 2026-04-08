@@ -1,0 +1,14 @@
+:root {
+  --ms-bg: #0f172a;
+  --ms-surface: #111827;
+  --ms-card: #1f2937;
+  --ms-border: #374151;
+  --ms-text: #e5e7eb;
+  --ms-text-muted: #9ca3af;
+  --ms-primary: #06b6d4;
+  --ms-success: #22c55e;
+  --ms-warn: #f59e0b;
+  --ms-danger: #ef4444;
+  --ms-radius: 14px;
+  --ms-gap: 12px;
+}
