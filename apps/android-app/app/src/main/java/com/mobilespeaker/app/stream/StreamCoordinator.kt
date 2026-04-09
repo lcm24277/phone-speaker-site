@@ -664,7 +664,7 @@ class StreamCoordinator(private val context: Context) {
     private fun launchHealthProbe() {
         val probeJob = scope.launch {
             val sessionId = sessionManager.current().sessionId
-            val probeScheduleMs = listOf(2000L, 4200L)
+            val probeScheduleMs = listOf(2000L, 4200L, 6500L)
             probeScheduleMs.forEachIndexed { index, delayMs ->
                 delay(if (index == 0) delayMs else delayMs - probeScheduleMs[index - 1])
                 if (sessionManager.current().state != SessionState.CONNECTED) return@launch

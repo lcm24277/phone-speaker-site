@@ -264,6 +264,7 @@ class MainActivity : ComponentActivity() {
         ) {
             item {
                 Card(
+                    modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = primary),
                     shape = RoundedCornerShape(16.dp)
                 ) {
@@ -300,7 +301,11 @@ class MainActivity : ComponentActivity() {
             }
 
             item {
-                Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
                     Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Text(text.audioControls, fontWeight = FontWeight.SemiBold)
                         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
@@ -335,7 +340,11 @@ class MainActivity : ComponentActivity() {
             }
 
             item {
-                Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
                     Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(text.connectionDetails, fontWeight = FontWeight.SemiBold)
                         Text("${text.playbackStatus}: ${toPlaybackText(ui.playbackState, text)}")
@@ -365,7 +374,11 @@ class MainActivity : ComponentActivity() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
                     Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Text(text.deviceConnection, fontWeight = FontWeight.SemiBold)
                         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
@@ -378,7 +391,11 @@ class MainActivity : ComponentActivity() {
 
             items(ui.discoveredPcs) { pc ->
                 val isConnected = ui.connectionStatus == "connected" && ui.connectedPcIp == pc.ip
-                Card(shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -400,15 +417,24 @@ class MainActivity : ComponentActivity() {
                         }
                         if (isConnected) {
                             Surface(
+                                modifier = Modifier.width(84.dp),
                                 shape = RoundedCornerShape(999.dp),
                                 color = Color(0xFFE8F5E9)
                             ) {
-                                Text(
-                                    text.statusConnected,
-                                    color = Color(0xFF2E7D32),
-                                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-                                    fontWeight = FontWeight.SemiBold
-                                )
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 6.dp, vertical = 10.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text.statusConnected,
+                                        color = Color(0xFF2E7D32),
+                                        fontWeight = FontWeight.SemiBold,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
                             }
                         } else {
                             PrimaryActionButton(
@@ -416,7 +442,7 @@ class MainActivity : ComponentActivity() {
                                 primary,
                                 { onConnectDiscovered(pc.ip, pc.name) },
                                 enabled = controlsEnabled,
-                                modifier = Modifier.width(96.dp)
+                                modifier = Modifier.width(84.dp)
                             )
                         }
                     }
@@ -425,7 +451,12 @@ class MainActivity : ComponentActivity() {
 
             if (ui.discoveredPcs.isEmpty()) {
                 item {
-                    Surface(shape = RoundedCornerShape(12.dp), color = Color.White, tonalElevation = 1.dp) {
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        color = Color.White,
+                        tonalElevation = 1.dp
+                    ) {
                         Text(
                             text.emptyDeviceHint,
                             modifier = Modifier.padding(14.dp),
@@ -456,7 +487,11 @@ class MainActivity : ComponentActivity() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
                     Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Text(text.preferencesTitle, fontWeight = FontWeight.SemiBold)
                         Text(text.languageTitle, color = Color(0xFF607D8B))
@@ -484,26 +519,43 @@ class MainActivity : ComponentActivity() {
                                     .fillMaxWidth()
                                     .clickable(onClick = onFollowSystemLanguage)
                                     .padding(horizontal = 14.dp, vertical = 12.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Column {
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(end = 12.dp)
+                                ) {
                                     Text(text.followSystemLanguage, fontWeight = FontWeight.Medium)
                                     Text(
                                         if (followSystemLanguage) text.followSystemEnabled else text.followSystemDisabled,
                                         color = Color(0xFF607D8B)
                                     )
                                 }
-                                Switch(checked = followSystemLanguage, onCheckedChange = { onFollowSystemLanguage() })
+                                Box(
+                                    modifier = Modifier.width(56.dp),
+                                    contentAlignment = Alignment.CenterEnd
+                                ) {
+                                    Switch(checked = followSystemLanguage, onCheckedChange = { onFollowSystemLanguage() })
+                                }
                             }
                         }
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(text.dontShowGuide)
-                            Switch(checked = ui.isDontShowAgain, onCheckedChange = onToggleDontShow)
+                            Text(
+                                text.dontShowGuide,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(end = 12.dp)
+                            )
+                            Box(
+                                modifier = Modifier.width(56.dp),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                Switch(checked = ui.isDontShowAgain, onCheckedChange = onToggleDontShow)
+                            }
                         }
                         AssistChip(onClick = {}, label = { Text("${text.currentStatus}: ${toStatusText(ui.connectionStatus, text)}") })
                         AssistChip(onClick = {}, label = { Text("${text.mutedLabel}: ${if (ui.isMuted) text.yes else text.no}") })
@@ -599,7 +651,11 @@ class MainActivity : ComponentActivity() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
                     Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(text.firstUseSteps, fontWeight = FontWeight.SemiBold)
                         Text(text.aboutStep1)

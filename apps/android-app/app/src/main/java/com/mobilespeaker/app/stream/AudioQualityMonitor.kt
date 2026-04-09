@@ -76,17 +76,21 @@ class AudioQualityMonitor {
         val snapshot = currentSnapshot()
         val severeUnderrunWithAudibleSignal =
             snapshot.frameCount >= 18 &&
-                snapshot.underrunCount >= 13 &&
-                snapshot.avgRms >= 0.035
+            snapshot.underrunCount >= 13 &&
+            snapshot.avgRms >= 0.035
+        val persistentUnderrunBadAudio =
+            snapshot.frameCount >= 90 &&
+                snapshot.underrunCount >= 12 &&
+                snapshot.avgRms >= 0.022
         val audibleDistortionBurst =
             snapshot.frameCount >= 18 &&
                 snapshot.avgRms >= 0.026 &&
-                snapshot.clippingCount >= 7 &&
-                snapshot.spikeCount >= 20
+                snapshot.clippingCount >= 6 &&
+                snapshot.spikeCount >= 18
         val spikeDominantBadAudio =
             snapshot.frameCount >= 18 &&
                 snapshot.avgRms >= 0.03 &&
-                snapshot.spikeCount >= 38
+                snapshot.spikeCount >= 34
         val moderateDistortionWithPersistentUnderrun =
             snapshot.frameCount >= 18 &&
                 snapshot.avgRms >= 0.02 &&
@@ -103,6 +107,7 @@ class AudioQualityMonitor {
                 audibleDistortionBurst ||
                 spikeDominantBadAudio ||
                 moderateDistortionWithPersistentUnderrun ||
+                persistentUnderrunBadAudio ||
                 severeUnderrunWithAudibleSignal ||
                 abnormalSilenceOnConnect
         if (!bad) return null
