@@ -94,10 +94,11 @@ body {
   color: var(--text-color);
 }
 
-.navbar-logo i {
+.navbar-logo .logo-icon {
+  width: 32px;
+  height: 32px;
   margin-right: 10px;
-  font-size: 1.8rem;
-  color: var(--primary-color);
+  object-fit: contain;
 }
 
 .navbar-menu {
@@ -132,6 +133,35 @@ body {
 
 .navbar-menu a:hover::after {
   width: 100%;
+}
+
+/* 语言切换按钮 */
+.navbar-language {
+  display: flex;
+  margin-right: 20px;
+}
+
+.lang-btn {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-light);
+  padding: 5px 10px;
+  margin-left: 5px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.9rem;
+}
+
+.lang-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.lang-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
 }
 
 .navbar-download {
@@ -373,7 +403,7 @@ body {
 
 /* 产品机制说明区 */
 .how-it-works {
-  padding: 80px 0;
+  padding: 100px 0 80px; /* 增加顶部内边距，确保内容完全显示 */
   background-color: var(--bg-light);
   position: relative;
 }
@@ -408,7 +438,7 @@ body {
 
 .step-number {
   position: absolute;
-  top: -15px;
+  top: 10px;
   right: 20px;
   width: 40px;
   height: 40px;
@@ -420,6 +450,7 @@ body {
   justify-content: center;
   font-size: 1.2rem;
   font-weight: bold;
+  z-index: 10;
 }
 
 .step-image {
@@ -640,6 +671,28 @@ body {
   margin-bottom: 20px;
 }
 
+/* 二维码容器样式 */
+.qrcode-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.qrcode {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+}
+
+.qrcode-text {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  text-align: center;
+}
+
 .download-note {
   font-size: 0.9rem;
   color: var(--text-light);
@@ -793,10 +846,11 @@ body {
   margin-bottom: 20px;
 }
 
-.footer-logo i {
+.footer-logo .logo-icon {
+  width: 32px;
+  height: 32px;
   margin-right: 10px;
-  font-size: 1.8rem;
-  color: var(--primary-color);
+  object-fit: contain;
 }
 
 .footer-links {
@@ -899,6 +953,15 @@ body {
   .intro-content .subtitle {
     font-size: 1.1rem;
   }
+  
+  .navbar-language {
+    margin-right: 10px;
+  }
+  
+  .lang-btn {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -924,6 +987,13 @@ body {
   
   .navbar-menu a {
     margin: 10px 0;
+  }
+  
+  .navbar-language {
+    position: absolute;
+    top: 15px;
+    right: 60px;
+    margin-right: 0;
   }
   
   .navbar-toggle {
@@ -967,6 +1037,11 @@ body {
   .footer-links {
     margin: 20px 0;
   }
+  
+  .qrcode {
+    width: 150px;
+    height: 150px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -999,11 +1074,12 @@ body {
     font-size: 3rem;
   }
   
-  .cta h2 {
-    font-size: 1.8rem;
+  .navbar-language {
+    right: 50px;
   }
   
-  .cta p {
-    font-size: 1rem;
+  .lang-btn {
+    padding: 3px 6px;
+    font-size: 0.75rem;
   }
 }

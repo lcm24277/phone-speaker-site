@@ -1,4 +1,4 @@
-// 导航栏吸附效果
+// 导航栏滚动效果
 window.addEventListener('scroll', function() {
     const navbar = document.getElementById('navbar');
     if (window.scrollY > 50) {
@@ -12,11 +12,11 @@ window.addEventListener('scroll', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const navbarToggle = document.querySelector('.navbar-toggle');
     const navbarMenu = document.querySelector('.navbar-menu');
-    
+
     navbarToggle.addEventListener('click', function() {
         navbarMenu.classList.toggle('active');
     });
-    
+
     // 点击菜单项后关闭菜单
     const menuItems = document.querySelectorAll('.navbar-menu a');
     menuItems.forEach(item => {
@@ -24,17 +24,99 @@ document.addEventListener('DOMContentLoaded', function() {
             navbarMenu.classList.remove('active');
         });
     });
+
+    // 初始化语言切换
+    initLanguageSwitcher();
+    
+    // 初始化反馈链接
+    initFeedbackLinks();
+    
+    // 初始化FAQ折叠面板
+    initFAQ();
+    
+    // 初始化视频播放
+    initVideoPlayer();
+    
+    // 初始化滚动动画
+    initScrollAnimations();
 });
 
-// FAQ折叠面板
-document.addEventListener('DOMContentLoaded', function() {
+// 语言切换功能
+function initLanguageSwitcher() {
+    const langZh = document.getElementById('lang-zh');
+    const langEn = document.getElementById('lang-en');
+    const langElements = document.querySelectorAll('.lang');
+    
+    // 检测浏览器语言
+    const browserLang = navigator.language || navigator.userLanguage;
+    const isChinese = browserLang.includes('zh');
+    
+    // 设置初始语言
+    setLanguage(isChinese ? 'zh' : 'en');
+    
+    // 中文按钮点击事件
+    langZh.addEventListener('click', function() {
+        setLanguage('zh');
+        langZh.classList.add('active');
+        langEn.classList.remove('active');
+    });
+    
+    // 英文按钮点击事件
+    langEn.addEventListener('click', function() {
+        setLanguage('en');
+        langEn.classList.add('active');
+        langZh.classList.remove('active');
+    });
+    
+    // 设置语言函数
+    function setLanguage(lang) {
+        langElements.forEach(el => {
+            if (el.getAttribute('data-lang') === lang) {
+                el.style.display = 'inline';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+        
+        // 更新反馈链接
+        updateFeedbackLinks(lang);
+        
+        // 保存语言偏好到本地存储
+        localStorage.setItem('preferredLanguage', lang);
+    }
+}
+
+// 初始化反馈链接
+function initFeedbackLinks() {
+    const feedbackLinks = document.querySelectorAll('#feedback-link, #footer-feedback-link');
+    
+    feedbackLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const lang = document.querySelector('.lang-btn.active').id === 'lang-zh' ? 'zh' : 'en';
+            const url = lang === 'zh' ? 'https://tally.so/r/jaWqeY' : 'https://tally.so/r/WOYkzk';
+            window.open(url, '_blank');
+        });
+    });
+}
+
+// 更新反馈链接
+function updateFeedbackLinks(lang) {
+    const feedbackLinks = document.querySelectorAll('#feedback-link, #footer-feedback-link');
+    feedbackLinks.forEach(link => {
+        link.href = lang === 'zh' ? 'https://tally.so/r/jaWqeY' : 'https://tally.so/r/WOYkzk';
+    });
+}
+
+// FAQ折叠面板功能
+function initFAQ() {
     const faqItems = document.querySelectorAll('.faq-item');
     
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
         
         question.addEventListener('click', function() {
-            // 切换当前项的active类
+            // 切换当前项的状态
             item.classList.toggle('active');
             
             // 关闭其他所有项
@@ -45,151 +127,105 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-});
-
-// 平滑滚动
-document.addEventListener('DOMContentLoaded', function() {
-    // 为所有内部链接添加平滑滚动
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80, // 减去导航栏高度
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-});
-
-// 滚动动画
-document.addEventListener('DOMContentLoaded', function() {
-    // 检查元素是否在视口中
-    function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
-            rect.bottom >= 0
-        );
-    }
-    
-    // 添加动画类
-    function addAnimation() {
-        const elements = document.querySelectorAll('.step, .scenario-card, .download-card, .faq-item');
-        
-        elements.forEach(element => {
-            if (isInViewport(element)) {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }
-        });
-    }
-    
-    // 初始设置
-    const animatedElements = document.querySelectorAll('.step, .scenario-card, .download-card, .faq-item');
-    animatedElements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    });
-    
-    // 初始检查
-    addAnimation();
-    
-    // 滚动时检查
-    window.addEventListener('scroll', addAnimation);
-});
+}
 
 // 视频播放功能
-document.addEventListener('DOMContentLoaded', function() {
+function initVideoPlayer() {
     const videoPlaceholder = document.querySelector('.video-placeholder');
     
     videoPlaceholder.addEventListener('click', function() {
-        // 在实际应用中，这里可以替换为真实的视频链接
-        // 这里仅作为示例，打开哔哩哔哩网站
-        window.open('https://www.bilibili.com/', '_blank');
+        // 在实际项目中，这里应该打开哔哩哔哩视频
+        // 由于没有实际的视频链接，这里只是模拟打开行为
+        alert('视频将在哔哩哔哩打开');
+        // window.open('https://www.bilibili.com', '_blank');
     });
-});
+}
 
-// 下载按钮功能
-document.addEventListener('DOMContentLoaded', function() {
-    const downloadButtons = document.querySelectorAll('.btn-download:not(.disabled)');
+// 滚动动画功能
+function initScrollAnimations() {
+    const animateElements = document.querySelectorAll('.step, .scenario-card, .download-card, .faq-item');
     
-    downloadButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // 获取文件名
-            const fileName = this.querySelector('.file-name')?.textContent || '手机变音箱安装包';
-            
-            // 在实际应用中，这里应该跳转到真实的下载链接
-            // 这里仅作为示例，显示一个提示
-            alert(`您正在下载: ${fileName}\n\n注意：这是演示版本，实际应用中将跳转到真实下载链接。`);
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
         });
+    }, {
+        threshold: 0.1
     });
     
-    // 禁用的下载按钮
-    const disabledButtons = document.querySelectorAll('.btn-download.disabled');
-    disabledButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
+    animateElements.forEach(element => {
+        // 设置初始状态
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        
+        // 开始观察
+        observer.observe(element);
+    });
+}
+
+// 平滑滚动功能
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            // 计算导航栏高度，确保内容不被遮挡
+            const navbarHeight = document.getElementById('navbar').offsetHeight;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// 下载按钮点击事件
+document.querySelectorAll('.btn-download').forEach(button => {
+    button.addEventListener('click', function(e) {
+        // 如果是禁用的按钮，阻止默认行为
+        if (this.classList.contains('disabled')) {
             e.preventDefault();
-            alert('该版本正在开发中，敬请期待！');
-        });
+            return;
+        }
+        
+        // 对于iOS版本的提示
+        if (this.classList.contains('ios')) {
+            e.preventDefault();
+            alert('iOS版本即将推出，请耐心等待');
+        }
     });
 });
 
-// 首屏元素淡入动效
-document.addEventListener('DOMContentLoaded', function() {
-    const introContent = document.querySelector('.intro-content');
-    const introImage = document.querySelector('.intro-image');
+// 页面加载完成后的初始化
+window.addEventListener('load', function() {
+    // 显示页面
+    document.body.style.opacity = '1';
     
-    // 设置初始状态
-    introContent.style.opacity = '0';
-    introContent.style.transform = 'translateX(-30px)';
-    introImage.style.opacity = '0';
-    introImage.style.transform = 'translateX(30px)';
-    
-    // 添加过渡效果
-    introContent.style.transition = 'opacity 1s ease, transform 1s ease';
-    introImage.style.transition = 'opacity 1s ease, transform 1s ease';
-    
-    // 触发动画
-    setTimeout(() => {
-        introContent.style.opacity = '1';
-        introContent.style.transform = 'translateX(0)';
+    // 检查本地存储中的语言偏好
+    const savedLang = localStorage.getItem('preferredLanguage');
+    if (savedLang) {
+        const langZh = document.getElementById('lang-zh');
+        const langEn = document.getElementById('lang-en');
         
-        // 图片延迟一点动画
-        setTimeout(() => {
-            introImage.style.opacity = '1';
-            introImage.style.transform = 'translateX(0)';
-        }, 300);
-    }, 300);
-});
-
-// 背景流动感动效增强
-document.addEventListener('DOMContentLoaded', function() {
-    const backgroundAnimation = document.querySelector('.background-animation');
-    
-    // 添加额外的动画元素
-    for (let i = 0; i < 3; i++) {
-        const additionalWave = document.createElement('div');
-        additionalWave.classList.add('additional-wave');
-        additionalWave.style.position = 'absolute';
-        additionalWave.style.borderRadius = '50%';
-        additionalWave.style.background = `radial-gradient(circle, rgba(0, 170, 255, 0.05) 0%, transparent 70%)`;
-        additionalWave.style.width = `${300 + i * 200}px`;
-        additionalWave.style.height = `${300 + i * 200}px`;
-        additionalWave.style.left = `${10 + i * 15}%`;
-        additionalWave.style.top = `${20 + i * 10}%`;
-        additionalWave.style.animation = `pulse ${8 + i * 2}s infinite ease-in-out`;
-        additionalWave.style.animationDelay = `${i * 1.5}s`;
-        
-        backgroundAnimation.appendChild(additionalWave);
+        if (savedLang === 'zh') {
+            langZh.click();
+        } else {
+            langEn.click();
+        }
     }
+});
+
+// 防止页面闪烁的初始样式
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.style.opacity = '1';
 });
